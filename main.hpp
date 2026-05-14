@@ -1,8 +1,6 @@
 #ifndef MAIN_HPP
 #define MAIN_HPP
 
-// Vector intro: makeVector, insertVector, deleteVector
-
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
@@ -20,24 +18,61 @@ void printVector(vector<int>);
 
 void makeVector(vector<int> &number)
 {
-    // TODO: fill the vector with random integers in [0, 20), then sort it.
+    for (int i = 0; i < number.size(); i++)
+    {
+        number[i] = rand() % 20;
+    }
+
+    sort(number.begin(), number.end());
 }
 
 void insertVector(vector<int> &number, int usernum)
 {
-    // TODO: insert usernum into the sorted vector while keeping it sorted.
+    for (auto iter = number.begin(); iter != number.end(); iter++)
+    {
+        if (*iter > usernum)
+        {
+            number.insert(iter, usernum);
+            return;
+        }
+    }
+
+    number.push_back(usernum);
 }
 
 int deleteVector(vector<int> &number, int usernum)
 {
-    // TODO: erase EVERY occurrence of usernum from the vector.
+    int deleted = 0;
+
+    auto iter = find(number.begin(), number.end(), usernum);
+
+    while (iter != number.end())
+    {
+        number.erase(iter);
+        deleted++;
+
+        iter = find(number.begin(), number.end(), usernum);
+    }
+
+    if (deleted == 0)
+    {
+        return -1;
+    }
+
+    return deleted;
 }
 
 int getInput(void)
 {
     int num;
+
     cout << "Enter your input\n";
-    cin >> num;
+
+    if (!(cin >> num))
+    {
+        num = 0;
+    }
+
     return num;
 }
 
@@ -50,6 +85,7 @@ void printVector(vector<int> number)
 {
     for (auto iter = number.begin(); iter != number.end(); iter++)
         cout << setw(5) << *iter;
+
     cout << endl;
 }
 
